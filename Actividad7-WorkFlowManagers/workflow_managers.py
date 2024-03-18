@@ -1,31 +1,56 @@
 import requests
 from prefect import task, flow
 import csv
+import pandas as pd
 
 ## extract
 @task
 def get_complaint_data(name):
-    r = requests.get(f"https://pokeapi.co/api/v2/pokemon/{name}/")
-    return r
+    if requests.get(f"https://pokeapi.co/api/v2/pokemon/{name}/"):
+        r = requests.get(f"https://pokeapi.co/api/v2/pokemon/{name}/")
+        return r
+    else:
+        return 0
 
 ## transform
 @task
 def parse_complaint_data(raw):
-    pokemon_info = []
-    values = raw.json()
-    pokemon_id = values['id']
-    pokemon_name = values['name']
-    pokemon_types = values['types']
-    pokemon_type = pokemon_types[0]['type']['name']
-    pokemon_info.append((pokemon_id, pokemon_name, pokemon_type))
-    return pokemon_info 
+    if raw == 0:
+        return 0
+    else:
+        pokemon_info = []
+        values = raw.json()
+        pokemon_id = values['id']
+        pokemon_name = values['name']
+        pokemon_types = values['types']
+        pokemon_type = pokemon_types[0]['type']['name']
+        pokemon_info.append((pokemon_id, pokemon_name, pokemon_type))
+        return pokemon_info 
 
 ## load
 @task
 def store_complaints(parsed):
-    with open('pokemon.csv', 'a', newline='') as f:
-        writer = csv.writer(f)
-        writer.writerows(parsed)
+    if parsed == 0:
+        print("This pokemon does not exist")
+    else:
+        id_new_pokemon = parsed[0][0]
+        if id_new_pokemon in get_pokemon_stored():
+            print("This pokemon is already stored")
+        else:
+            with open('pokemon.csv', 'a', newline='') as f:
+                writer = csv.writer(f)
+                writer.writerows(parsed)
+
+def get_pokemon_stored():
+    df = pd.read_csv('pokemon.csv')
+
+    num_rows = df.shape[0]
+    id_stored = []
+    for i in range(num_rows):
+        id_stored.append(df.iloc[i]['id'])
+
+    return id_stored
+
 
 @flow
 def myFlow():

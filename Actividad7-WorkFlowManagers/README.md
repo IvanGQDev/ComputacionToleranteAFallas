@@ -45,3 +45,9 @@ prefect server start
 ![prefect](https://github.com/IvanGQDev/ComputacionToleranteAFallas/assets/71247107/f3c940a1-58ba-4f9d-b405-0bf6e814fd46)
 
 ![prefect2](https://github.com/IvanGQDev/ComputacionToleranteAFallas/assets/71247107/2edfce76-9fea-4600-8784-5d480e81b7bf)
+
+Task Example
+
+![TaskExample](https://github.com/IvanGQDev/ComputacionToleranteAFallas/assets/71247107/f615ca96-6edc-472d-8f69-451139e5719c)
+
+

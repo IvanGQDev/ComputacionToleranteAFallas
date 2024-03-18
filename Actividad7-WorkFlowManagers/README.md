@@ -26,6 +26,7 @@ pip install -r requirements.txt
 ## Example 
 
 Enter a Pokémon name: pikachu
+
 ![Added](https://github.com/IvanGQDev/ComputacionToleranteAFallas/assets/71247107/0a8e2807-30ea-40ef-ba69-e10c972b586a)
 
 Do you want to add another Pokémon? (y/n): y
